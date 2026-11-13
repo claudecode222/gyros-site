@@ -12,26 +12,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('trust proxy', 1);
 
-const BOT_TOKEN = process.env.BOT_TOKEN;
-const CHAT_ID = process.env.CHAT_ID;
+// ВРЕМЕННО ЗАШИЛИ ТОКЕН И ID ПРЯМО В КОД
+const BOT_TOKEN = '9043962624:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw'; 
+const CHAT_ID = '1198178866'; 
+
 const MIN_PROMO_AMOUNT = 1000;
 const JWT_SECRET = 'gyros-super-secret-key-2026';
 
-// Данные админа
 const ADMIN_PHONE = process.env.ADMIN_PHONE || '+79200165232';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'arsenadmin';
-const ADMIN_IP_STRING = process.env.ADMIN_IP || '127.0.0.1';
-
-// Разбиваем строку с IP на массив (убираем пробелы)
-const ALLOWED_IPS = ADMIN_IP_STRING.split(',').map(ip => ip.trim());
+const ADMIN_IP = process.env.ADMIN_IP || '127.0.0.1';
 
 const PROMO_FILE = path.join(__dirname, 'promo.json');
 const USERS_FILE = path.join(__dirname, 'users.json');
 const PRICES_FILE = path.join(__dirname, 'prices.json');
 
-// ==========================================
-// ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-// ==========================================
 function cleanPhone(phone) {
   if (!phone) return '';
   let cleaned = String(phone).replace(/\D/g, '');
@@ -48,64 +43,32 @@ function getClientIp(req) {
 
 function isIpAllowed(req) {
   const clientIp = getClientIp(req);
-  
-  // Если зашли с локального компьютера
-  if (clientIp === '127.0.0.1' || clientIp === '::1') {
-    return true; // Всегда разрешаем локальный вход
+  if (ADMIN_IP === '127.0.0.1' && (clientIp === '127.0.0.1' || clientIp === '::1')) {
+    return true;
   }
-  
-  // Проверяем, есть ли IP клиента в списке разрешенных
-  return ALLOWED_IPS.includes(clientIp);
+  return clientIp === ADMIN_IP;
 }
 
 function readDB(file) {
   try {
     if (fs.existsSync(file)) return JSON.parse(fs.readFileSync(file, 'utf8'));
-  } catch (e) {
-    console.error(`Ошибка чтения ${file}:`, e);
-  }
+  } catch (e) { console.error(`Ошибка чтения ${file}:`, e); }
   return null;
 }
 
 function writeDB(file, data) {
   try {
     fs.writeFileSync(file, JSON.stringify(data, null, 2));
-  } catch (e) {
-    console.error(`Ошибка записи ${file}:`, e);
-  }
+  } catch (e) { console.error(`Ошибка записи ${file}:`, e); }
 }
 
-// ==========================================
-// БАЗА ДАННЫХ И ИНИЦИАЛИЗАЦИЯ
-// ==========================================
 const defaultPrices = {
-  "Шаурма Классическая": 260,
-  "Шаурма Сырная": 280,
-  "Шаурма В булочке": 260,
-  "Хот-дог": 220,
-  "Шаурма Классическая XL": 280,
-  "Шаурма Сырная XL": 300,
-  "Frustyle Лайм-лимон": 80,
-  "Вода AQUA MINERALE (с лаймом)": 80,
-  "Вода AQUA MINERALE (с лимоном)": 80,
-  "Вода AQUA MINERALE (без газа)": 80,
-  "Вода AQUA MINERALE (газ)": 80,
-  "Lipton Холодный чай Лимонад": 100,
-  "Lipton Холодный чай Зеленый": 100,
-  "Lipton Холодный чай Персик": 100,
-  "Drive Me Original": 100,
-  "Adrenaline Rush": 150,
-  "Drive Me Zero Sugar": 100,
-  "Drive Me Cactus Vibe": 100,
-  "Drive Me Гуава-Манго (Zero)": 100,
-  "Adrenaline Rush Тропический": 150,
-  "Drive Me Berry Kick": 100,
-  "Adrenaline Rush Zero Sugar": 150,
-  "Frustyle Лимонад": 100,
-  "Evervess Кола": 80,
-  "Frustyle Апельсин": 80,
-  "Frustyle Апельсин (ж/б)": 80,
-  "Evervess Кола (стекло)": 100
+  "Шаурма Классическая": 260, "Шаурма Сырная": 280, "Шаурма В булочке": 260, "Хот-дог": 220,
+  "Шаурма Классическая XL": 280, "Шаурма Сырная XL": 300,
+  "Frustyle Лайм-лимон": 80, "Вода AQUA MINERALE (с лаймом)": 80, "Вода AQUA MINERALE (с лимоном)": 80, "Вода AQUA MINERALE (без газа)": 80, "Вода AQUA MINERALE (газ)": 80,
+  "Lipton Холодный чай Лимонад": 100, "Lipton Холодный чай Зеленый": 100, "Lipton Холодный чай Персик": 100, "Drive Me Original": 100, "Adrenaline Rush": 150,
+  "Drive Me Zero Sugar": 100, "Drive Me Cactus Vibe": 100, "Drive Me Гуава-Манго (Zero)": 100, "Adrenaline Rush Тропический": 150,
+  "Drive Me Berry Kick": 100, "Adrenaline Rush Zero Sugar": 150, "Frustyle Лимонад": 100, "Evervess Кола": 80, "Frustyle Апельсин": 80, "Frustyle Апельсин (ж/б)": 80, "Evervess Кола (стекло)": 100
 };
 
 let currentPrices = readDB(PRICES_FILE) || {};
@@ -120,7 +83,6 @@ if (pricesChanged || Object.keys(currentPrices).length === 0) {
   writeDB(PRICES_FILE, currentPrices);
 }
 
-// Создание админа
 let users = readDB(USERS_FILE) || [];
 const cleanAdminPhone = cleanPhone(ADMIN_PHONE);
 if (cleanAdminPhone && ADMIN_PASSWORD && !users.find(u => cleanPhone(u.phone) === cleanAdminPhone)) {
@@ -130,17 +92,9 @@ if (cleanAdminPhone && ADMIN_PASSWORD && !users.find(u => cleanPhone(u.phone) ==
 }
 
 const ADDON_PRICES = {
-  "Больше овощей": 20,
-  "Больше мяса": 30,
-  "Томатный соус": 15,
-  "Сырный соус": 15,
-  "Фирменный соус": 20,
-  "Больше остроты": 20
+  "Больше овощей": 20, "Больше мяса": 30, "Томатный соус": 15, "Сырный соус": 15, "Фирменный соус": 20, "Больше остроты": 20
 };
 
-// ==========================================
-// АУТЕНТИФИКАЦИЯ И IP
-// ==========================================
 app.get('/api/check-ip', (req, res) => {
   res.json({ allowed: isIpAllowed(req) });
 });
@@ -205,9 +159,6 @@ app.post('/api/auth/login', async (req, res) => {
   res.json({ ok: true, token, role: user.role, name: user.name, phone: user.phone });
 });
 
-// ==========================================
-// ЦЕНЫ
-// ==========================================
 app.get('/api/prices', (req, res) => {
   res.json({ ok: true, prices: readDB(PRICES_FILE) });
 });
@@ -220,9 +171,6 @@ app.post('/api/prices', authenticateToken, isAdmin, (req, res) => {
   res.json({ ok: true });
 });
 
-// ==========================================
-// ЗАКАЗ
-// ==========================================
 const orderLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 30,
@@ -326,11 +274,16 @@ app.post('/api/order', orderLimiter, async (req, res) => {
         signal: controller.signal
       });
       clearTimeout(timeoutId);
-      if (!tgRes.ok) {
+      
+      const tgData = await tgRes.json();
+      
+      if (!tgRes.ok || !tgData.ok) {
+        console.error('❌ ОШИБКА TELEGRAM:', tgData);
         return res.status(500).json({ ok: false, error: 'Не удалось отправить заказ. Попробуйте позже.' });
       }
     } catch (tgError) {
       clearTimeout(timeoutId);
+      console.error('❌ СЕТЕВАЯ ОШИБКА:', tgError);
       return res.status(500).json({ ok: false, error: 'Не удалось отправить заказ. Попробуйте позже.' });
     }
 
