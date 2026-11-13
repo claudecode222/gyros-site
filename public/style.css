@@ -1,0 +1,2154 @@
+/* ==========================================================================
+   1. ПЕРЕМЕННЫЕ (ЦВЕТА, ШРИФТЫ)
+   ========================================================================== */
+:root {
+  --black: #0a0a0a;
+  --gray: #1a1a1a;
+  --light-gray: #2a2a2a;
+  --yellow: #FFD700;
+  --yellow-dark: #FFC400;
+  --text-main: #eeeeee;
+  --text-muted: #aaaaaa;
+  --text-dark: #666666;
+  --white: #ffffff;
+  --red: #ef4444;
+  --green: #4ade80;
+  --font-main: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', 'Noto Color Emoji', 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+  --font-accent: 'Russo One', sans-serif;
+  --font-display: 'Playfair Display', serif;
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --border-radius-sm: 8px;
+  --border-radius-md: 16px;
+  --border-radius-lg: 24px;
+  --border-radius-pill: 50px;
+}
+
+/* ==========================================================================
+   2. СБРОС СТИЛЕЙ (RESET)
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 0;
+  padding-left: 0;
+  -webkit-tap-highlight-color: transparent;
+  -moz-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--text-main);
+  font-family: var(--font-main);
+  line-height: 1.6;
+  overflow-x: hidden;
+  padding-bottom: 80px;
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding-top: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  border-left: none;
+  background: none;
+  font-family: inherit;
+  outline: none;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  outline: none;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  border-left: none;
+}
+
+/* ==========================================================================
+   3. СНЕЖИНКИ И ФОНОВЫЕ ОВОЩИ
+   ========================================================================== */
+.snow-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.snowflake {
+  position: absolute;
+  top: -20px;
+  color: var(--white);
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(0) translateX(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(105vh) translateX(50px) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.veggies-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.veggie {
+  position: absolute;
+  opacity: 0.15;
+  animation: float linear infinite;
+  filter: drop-shadow(0 0 10px var(--yellow));
+  will-change: transform;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.veggie svg {
+  width: 1em;
+  height: 1em;
+  display: block;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(110vh) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(50vh) rotate(180deg) scale(1.1);
+  }
+  100% {
+    transform: translateY(-20vh) rotate(360deg) scale(1);
+  }
+}
+
+/* ==========================================================================
+   4. АНИМАЦИИ ПРИ СКРОЛЛЕ
+   ========================================================================== */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity, transform;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   5. ОБЩАЯ СТРУКТУРА СЕКЦИЙ И ЗАГОЛОВКОВ
+   ========================================================================== */
+header, section {
+  position: relative;
+  z-index: 1;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 24px;
+  padding-bottom: 24px;
+  padding-left: 40px;
+  padding-right: 40px;
+  width: 100%;
+}
+
+h2 {
+  color: var(--yellow);
+  margin-bottom: 24px;
+  font-size: 40px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+h3 {
+  color: var(--yellow);
+  font-size: 24px;
+  margin-bottom: 15px;
+}
+
+/* ==========================================================================
+   6. ШАПКА САЙТА (HEADER)
+   ========================================================================== */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 15px;
+  border-bottom: 2px solid var(--yellow);
+  position: relative;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.logo-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.site-logo {
+  height: 80px;
+  width: auto;
+  display: block;
+  mix-blend-mode: screen;
+}
+
+.santa-hat {
+  position: absolute;
+  top: -15px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  transform: rotate(22deg);
+  pointer-events: none;
+}
+
+.header-badge {
+  display: inline-block;
+  background-color: rgba(255, 215, 0, 0.15);
+  border: 1px solid var(--yellow);
+  color: var(--yellow);
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: var(--border-radius-pill);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+@keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 rgba(255, 215, 0, 0);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+  }
+}
+
+/* ==========================================================================
+   7. НАВИГАЦИЯ (ДЕСКТОП)
+   ========================================================================== */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.desktop-nav a {
+  color: var(--yellow);
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 15px;
+  transition: color var(--transition-normal), transform var(--transition-normal);
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.desktop-nav a:hover {
+  color: var(--white);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   8. АВТОРИЗАЦИЯ (СКРЫТА ПО УМОЛЧАНИЮ)
+   ========================================================================== */
+.auth-container {
+  display: none !important; /* Скрыто по умолчанию, показывается скриптом */
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.auth-container.active {
+  display: flex !important;
+}
+
+.btn-auth {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border-radius: var(--border-radius-pill);
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  white-space: nowrap;
+}
+
+#btnOpenLogin {
+  background: transparent;
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+}
+
+#btnOpenRegister {
+  background: var(--yellow);
+  color: var(--black);
+  border: 2px solid var(--yellow);
+}
+
+#btnAdminPanel {
+  background: #fff;
+  color: #000;
+  border: none;
+}
+
+#btnLogout {
+  background: transparent;
+  color: #ccc;
+  border: 1px solid #ccc;
+}
+
+.btn-auth:hover {
+  transform: scale(1.05);
+}
+
+.user-name {
+  color: var(--white);
+  font-weight: bold;
+  margin-right: 5px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+/* ==========================================================================
+   9. БУРГЕР-МЕНЮ И МОБИЛЬНАЯ НАВИГАЦИЯ
+   ========================================================================== */
+.burger-menu {
+  display: none;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  flex-direction: column;
+  gap: 5px;
+  padding: 5px;
+  z-index: 1001;
+}
+
+.burger-menu span {
+  display: block;
+  width: 26px;
+  height: 3px;
+  background-color: var(--yellow);
+  border-radius: 3px;
+  transition: var(--transition-normal);
+}
+
+.burger-menu.active span:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+.burger-menu.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-menu.active span:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+.mobile-nav {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 220px;
+  height: auto;
+  background-color: var(--gray);
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 15px;
+  padding-right: 15px;
+  border: 2px solid var(--yellow);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  opacity: 0;
+  transform: translateY(-10px) scale(0.95);
+  pointer-events: none;
+  transition: all var(--transition-normal) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mobile-nav.active {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.mobile-nav a {
+  color: var(--white);
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--light-gray);
+  transition: color var(--transition-normal);
+  display: block;
+}
+
+.mobile-nav a:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.mobile-nav a:hover {
+  color: var(--yellow);
+}
+
+.mobile-nav-footer {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed var(--light-gray);
+}
+
+.mobile-call-btn {
+  display: block;
+  text-align: center;
+  background-color: var(--yellow);
+  color: var(--black) !important;
+  padding: 10px;
+  border-radius: var(--border-radius-sm);
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  border: none !important;
+}
+
+.mobile-nav-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-normal) ease;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.mobile-nav-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ==========================================================================
+   10. ГЛАВНЫЙ БАННЕР (HERO)
+   ========================================================================== */
+.hero {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.hero-banner-img {
+  width: 100%;
+  max-width: 1200px;
+  height: auto;
+  display: block;
+  margin-bottom: 30px;
+  animation: slide-up 0.8s ease-out 0.2s both;
+  mix-blend-mode: screen;
+  filter: contrast(1.4) brightness(1.1);
+  -webkit-mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 80%);
+  mask-image: radial-gradient(ellipse at center, rgba(0, 0, 0, 1) 50%, rgba(0, 0, 0, 0) 80%);
+}
+
+.hero-cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  animation: slide-up 0.8s ease-out 0.4s both;
+}
+
+.btn-hero {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background-color: var(--yellow);
+  color: var(--black);
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 56px;
+  padding-right: 56px;
+  border-radius: 60px;
+  font-size: 22px;
+  font-weight: 900;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  animation: glow-breath 2.5s ease-in-out infinite;
+}
+
+@keyframes glow-breath {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.2));
+  }
+  50% {
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.4));
+  }
+}
+
+.btn-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transition: left 0.6s;
+  z-index: 2;
+}
+
+.btn-hero:hover::before {
+  left: 100%;
+}
+
+.btn-hero:hover {
+  background-color: var(--yellow-dark);
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.7);
+  animation: none;
+}
+
+.btn-hero .arrow {
+  font-size: 26px;
+  transition: transform var(--transition-normal);
+}
+
+.btn-hero:hover .arrow {
+  transform: rotate(-15deg) scale(1.15);
+}
+
+.hero-hint {
+  margin-top: 5px;
+  color: var(--text-muted);
+  font-size: 16px;
+  font-style: italic;
+  animation: hint-fade 3s ease-in-out infinite;
+}
+
+@keyframes hint-fade {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+    color: var(--yellow);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   11. БЕГУЩАЯ СТРОКА
+   ========================================================================== */
+.marquee {
+  position: relative;
+  z-index: 1;
+  background-color: var(--yellow);
+  overflow: hidden;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-top: 3px solid var(--yellow-dark);
+  border-bottom: 3px solid var(--yellow-dark);
+  cursor: default;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-track {
+  display: inline-flex;
+  gap: 56px;
+  white-space: nowrap;
+  animation: scroll-left 28s linear infinite;
+}
+
+.marquee-track span {
+  color: var(--black);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing: 1px;
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ==========================================================================
+   12. СЕТКА МЕНЮ И КАРТОЧКИ ТОВАРОВ
+   ========================================================================== */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-bottom: 50px;
+}
+
+.card {
+  background-color: var(--gray);
+  border: 2px solid var(--light-gray);
+  border-radius: 20px;
+  padding: 30px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card:hover {
+  border-color: var(--yellow);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(255, 215, 0, 0.15);
+}
+
+.card-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 20px;
+  border: 1px solid var(--light-gray);
+  transition: transform var(--transition-slow) ease;
+  background-color: #111111;
+}
+
+.card:hover .card-img {
+  transform: scale(1.08);
+}
+
+.card-emoji-fallback {
+  font-size: 100px;
+  text-align: center;
+  margin-bottom: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  background-color: #222222;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--light-gray);
+}
+
+.card h3 {
+  color: var(--yellow);
+  margin-bottom: 10px;
+  font-size: 28px;
+  transition: color var(--transition-normal);
+}
+
+.card p {
+  color: var(--text-muted);
+  margin-bottom: 24px;
+  font-size: 16px;
+  flex-grow: 1;
+}
+
+.card-bottom {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--light-gray);
+  padding-top: 20px;
+  gap: 5px;
+}
+
+.card-bottom span.price-tag {
+  color: var(--yellow);
+  font-weight: 900;
+  font-size: 22px; 
+  white-space: nowrap;
+}
+
+.btn-open-modal {
+  background-color: transparent;
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 16px;
+  padding-right: 16px;
+  border-radius: var(--border-radius-pill);
+  font-weight: 700;
+  font-size: 14px; 
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  touch-action: manipulation;
+  white-space: nowrap;
+  flex-shrink: 0; 
+}
+
+.btn-open-modal:hover {
+  background-color: var(--yellow);
+  color: var(--black);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+/* ==========================================================================
+   13. НАПИТКИ
+   ========================================================================== */
+.btn-toggle-drinks {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 30px;
+  background-color: transparent;
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 32px;
+  padding-right: 32px;
+  border-radius: var(--border-radius-pill);
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.btn-toggle-drinks:hover {
+  background-color: var(--yellow);
+  color: var(--black);
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.drinks-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  max-height: 620px;
+  overflow: hidden;
+  transition: max-height 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.drinks-grid::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(to top, var(--black) 0%, transparent 100%);
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.drinks-grid.expanded {
+  max-height: 5000px;
+}
+
+.drinks-grid.expanded::after {
+  opacity: 0;
+}
+
+.drinks-grid .card-img {
+  height: 220px;
+  width: 100%;
+  object-fit: contain;
+  background-color: var(--white);
+  border-radius: 12px;
+  padding: 5px;
+  border: none;
+  transform: scale(0.95);
+  transition: transform var(--transition-normal) ease;
+  margin-bottom: 20px;
+}
+
+.drinks-grid .card:hover .card-img {
+  transform: scale(1.02);
+}
+
+/* ==========================================================================
+   14. МОДАЛЬНОЕ ОКНО (ВЫБОР РАЗМЕРА)
+   ========================================================================== */
+.size-switcher {
+  display: flex;
+  gap: 10px;
+  background-color: var(--gray);
+  padding: 6px;
+  border-radius: 12px;
+  border: 1px solid var(--light-gray);
+  margin-bottom: 20px;
+}
+
+.size-btn {
+  flex: 1;
+  background-color: transparent;
+  color: var(--text-muted);
+  border: none;
+  padding: 12px;
+  border-radius: var(--border-radius-sm);
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+}
+
+.size-btn:hover {
+  color: var(--white);
+}
+
+.size-btn.active {
+  background-color: var(--yellow);
+  color: var(--black);
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.3);
+}
+
+/* ==========================================================================
+   15. О НАС (ABOUT)
+   ========================================================================== */
+.about-text {
+  margin-bottom: 40px;
+}
+
+.about-text p {
+  margin-bottom: 20px;
+  color: var(--text-muted);
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.about-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.about-feature {
+  background-color: var(--gray);
+  border: 1px solid var(--light-gray);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  transition: var(--transition-normal);
+}
+
+.about-feature:hover {
+  border-color: var(--yellow);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(255, 215, 0, 0.1);
+}
+
+.feature-icon {
+  font-size: 50px;
+  display: block;
+  margin-bottom: 15px;
+  transition: transform var(--transition-normal);
+}
+
+.about-feature:hover .feature-icon {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.about-feature h3 {
+  color: var(--yellow);
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.about-feature p {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.about-bottom-text {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: var(--white);
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px dashed var(--light-gray);
+}
+
+/* ==========================================================================
+   16. ДОСТАВКА
+   ========================================================================== */
+.delivery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.delivery-card {
+  background-color: var(--gray);
+  border: 1px solid var(--light-gray);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  transition: var(--transition-normal);
+}
+
+.delivery-card:hover {
+  border-color: var(--yellow);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.delivery-icon {
+  font-size: 50px;
+  margin-bottom: 15px;
+  display: inline-block;
+  transition: transform var(--transition-normal);
+}
+
+.delivery-card:hover .delivery-icon {
+  transform: translateY(-5px) scale(1.2);
+}
+
+.delivery-card h3 {
+  color: var(--yellow);
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.delivery-card p {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.delivery-card b {
+  color: var(--white);
+}
+
+/* ==========================================================================
+   17. КАРТА
+   ========================================================================== */
+.map-section {
+  width: 100%;
+  display: block;
+}
+
+.map-wrapper {
+  border: 2px solid var(--yellow);
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: box-shadow var(--transition-normal);
+  width: 100%;
+  display: block;
+}
+
+.map-wrapper:hover {
+  box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+}
+
+.map-wrapper iframe {
+  display: block;
+  width: 100% !important;
+  height: 450px !important;
+  border: none;
+}
+
+/* ==========================================================================
+   18. ОТЗЫВЫ
+   ========================================================================== */
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.review-card {
+  background-color: var(--gray);
+  border: 1px solid var(--light-gray);
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition-normal);
+}
+
+.review-card:hover {
+  border-color: var(--yellow);
+  transform: translateY(-5px);
+  background-color: #222222;
+}
+
+.review-stars {
+  color: var(--yellow);
+  font-size: 22px;
+  margin-bottom: 15px;
+  transition: transform var(--transition-normal);
+}
+
+.review-card:hover .review-stars {
+  transform: scale(1.1);
+}
+
+.review-text {
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 20px;
+  flex-grow: 1;
+  font-style: italic;
+}
+
+.review-author {
+  color: var(--yellow);
+  font-weight: bold;
+  text-align: right;
+  font-size: 16px;
+}
+
+.reviews-btn-wrapper {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.btn-yandex {
+  display: inline-block;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  padding-left: 40px;
+  padding-right: 40px;
+  background-color: transparent;
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+  border-radius: var(--border-radius-pill);
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: bold;
+  transition: var(--transition-normal);
+}
+
+.btn-yandex:hover {
+  background-color: var(--yellow);
+  color: var(--black);
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   19. ОБРАТНАЯ СВЯЗЬ
+   ========================================================================== */
+.feedback-container {
+  background-color: var(--gray);
+  padding: 25px;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--light-gray);
+  text-align: left;
+}
+
+.feedback-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.feedback-form textarea {
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--light-gray);
+  background-color: var(--black);
+  color: var(--text-main);
+  font-size: 16px;
+  font-family: inherit;
+  transition: var(--transition-normal);
+  resize: vertical;
+}
+
+.feedback-form textarea:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.checkbox-label {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.checkbox-label input {
+  margin-top: 3px;
+  accent-color: var(--yellow);
+  width: 20px;
+  height: 20px;
+}
+
+/* ==========================================================================
+   20. ПРОГРЕСС АКЦИИ
+   ========================================================================== */
+.promo-progress-bar {
+  height: 12px;
+  background-color: var(--gray);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.promo-progress-fill {
+  height: 100%;
+  background-color: var(--yellow);
+  width: 0%;
+  transition: width 0.5s ease;
+  box-shadow: 0 0 10px var(--yellow);
+}
+
+.promo-progress-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 8px;
+}
+
+/* ==========================================================================
+   21. ПОДВАЛ САЙТА (FOOTER)
+   ========================================================================== */
+.site-footer {
+  background-color: #050505;
+  border-top: 2px solid var(--yellow);
+  padding-top: 60px;
+  position: relative;
+  z-index: 1;
+  margin-top: 0;
+}
+
+.footer-p-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr;
+  gap: 30px;
+  align-items: start;
+}
+
+.footer-p-side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.footer-p-center {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-card {
+  background-color: #111111;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 25px;
+  padding-right: 25px;
+  border-radius: var(--border-radius-md);
+  border: 1px solid #222222;
+  transition: border-color var(--transition-normal), transform var(--transition-normal);
+}
+
+.footer-card:hover {
+  border-color: var(--yellow);
+  transform: translateY(-2px);
+}
+
+.footer-col h4 {
+  color: var(--yellow);
+  font-size: 18px;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--light-gray);
+  padding-bottom: 10px;
+}
+
+.footer-col ul {
+  list-style: none;
+}
+
+.footer-col ul li {
+  margin-bottom: 10px;
+  color: var(--text-muted);
+  font-size: 15px;
+  transition: var(--transition-fast);
+}
+
+.footer-col ul li a {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: var(--transition-fast);
+  display: inline-block;
+}
+
+.footer-col ul li a:hover {
+  color: var(--yellow);
+  transform: translateX(5px);
+}
+
+/* --- СТИЛИ ДЛЯ БЛОКА "ГРАФИК РАБОТЫ" --- */
+.footer-col .work-schedule-list li:nth-child(1) {
+  color: var(--white);
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+
+.footer-col .work-schedule-list li:nth-child(2) {
+  color: var(--yellow);
+  font-weight: 900;
+  font-size: 24px;
+  margin-bottom: 5px;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  letter-spacing: 1px;
+}
+
+.footer-col .work-schedule-list li:nth-child(3) {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+/* ============================================
+   КОМПАКТНЫЙ БЛОК РЕКВИЗИТОВ В ПОДВАЛЕ
+   ============================================ */
+.requisites-card {
+  padding: 15px 20px;
+}
+
+.requisites-card h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+}
+
+.requisites-card ul li {
+  font-size: 13px;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.requisites-card .footer-socials {
+  margin-top: 12px;
+  gap: 10px;
+}
+
+.requisites-card .social-icon {
+  width: 36px;
+  height: 36px;
+}
+
+.requisites-card .social-icon svg {
+  width: 18px;
+  height: 18px;
+}
+/* ============================================ */
+
+.footer-contacts {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer-phone {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--white);
+  text-decoration: none;
+  margin-bottom: 5px;
+  transition: var(--transition-normal);
+}
+
+.footer-phone:hover {
+  color: var(--yellow);
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.footer-note {
+  font-size: 13px;
+  color: var(--text-dark);
+  margin-bottom: 10px;
+}
+
+.footer-socials {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.social-icon {
+  width: 45px;
+  height: 45px;
+  background-color: var(--light-gray);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  transition: all var(--transition-normal) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.social-icon svg {
+  width: 22px;
+  height: 22px;
+  transition: transform var(--transition-normal);
+}
+
+.social-icon:hover {
+  background-color: var(--yellow);
+  color: var(--black);
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+.social-icon:hover svg {
+  transform: rotate(15deg);
+}
+
+.footer-bottom {
+  margin-top: 40px;
+  padding: 24px;
+  text-align: center;
+  border-top: 1px solid #222222;
+  color: var(--text-dark);
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   22. ПЛАВАЮЩАЯ КОРЗИНА
+   ========================================================================== */
+.floating-cart {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--yellow);
+  color: var(--black);
+  border: none;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-left: 35px;
+  padding-right: 35px;
+  border-radius: var(--border-radius-pill);
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  transition: all var(--transition-normal) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: cart-pulse 2s infinite alternate;
+  touch-action: manipulation;
+}
+
+@keyframes cart-pulse {
+  0% {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 rgba(255, 215, 0, 0);
+  }
+  100% {
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 215, 0, 0.3);
+  }
+}
+
+.floating-cart:hover {
+  transform: scale(1.05) translateY(-3px);
+  background-color: var(--yellow-dark);
+  animation: none;
+}
+
+.floating-cart.bump {
+  animation: bump 0.4s ease;
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   23. МОДАЛЬНЫЕ ОКНА (ОБЩИЕ СТИЛИ)
+   ========================================================================== */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background-color: var(--gray);
+  padding: 40px;
+  border-radius: var(--border-radius-lg);
+  border: 2px solid var(--yellow);
+  width: 100%;
+  max-width: 540px;
+  position: relative;
+  max-height: 90vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  animation: modal-pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-drag-handle {
+  display: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  color: var(--text-muted);
+  font-size: 36px;
+  font-weight: bold;
+  cursor: pointer;
+  line-height: 1;
+  transition: var(--transition-normal);
+  padding: 5px;
+}
+
+.close-btn:hover {
+  color: var(--yellow);
+  transform: rotate(90deg) scale(1.1);
+}
+
+.modal-content h2 {
+  color: var(--yellow);
+  font-size: 28px;
+  margin-bottom: 12px;
+  text-align: left;
+  padding-right: 30px;
+}
+
+.modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 30px;
+}
+
+/* ==========================================================================
+   24. КНОПКИ В МОДАЛКАХ
+   ========================================================================== */
+.btn-primary {
+  background-color: var(--yellow);
+  color: var(--black);
+  border: none;
+  padding: 18px;
+  border-radius: 12px;
+  font-weight: 900;
+  font-size: 18px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  touch-action: manipulation;
+}
+
+.btn-primary:hover {
+  background-color: var(--yellow-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+}
+
+.btn-primary:active {
+  transform: scale(0.98);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--yellow);
+  border: 2px solid var(--yellow);
+  padding: 16px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  transition: var(--transition-normal);
+  touch-action: manipulation;
+}
+
+.btn-outline:hover {
+  background-color: rgba(255, 215, 0, 0.1);
+}
+
+.btn-outline:active {
+  transform: scale(0.98);
+}
+
+.full-width {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   25. КОРЗИНА (СПИСОК ТОВАРОВ)
+   ========================================================================== */
+.cart-list {
+  margin-bottom: 24px;
+  max-height: 50vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 8px;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--black);
+  border: 1px solid var(--light-gray);
+  border-radius: var(--border-radius-md);
+  padding: 20px;
+  margin-bottom: 12px;
+  transition: var(--transition-normal);
+  animation: slide-in 0.3s ease-out;
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.cart-item:hover {
+  border-color: var(--yellow);
+  background-color: #111111;
+}
+
+.cart-item-info {
+  flex-grow: 1;
+  padding-right: 20px;
+}
+
+.cart-item-title {
+  font-weight: bold;
+  color: var(--white);
+  font-size: 18px;
+  margin-bottom: 8px;
+}
+
+.cart-item-desc {
+  font-size: 14px;
+  color: var(--text-dark);
+  line-height: 1.5;
+}
+
+.cart-item-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.cart-item-qty {
+  display: flex;
+  align-items: center;
+  background-color: #222222;
+  border-radius: var(--border-radius-sm);
+  padding: 4px;
+}
+
+.qty-btn {
+  width: 36px;
+  height: 36px;
+  background-color: transparent;
+  border: none;
+  color: var(--white);
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+.qty-btn:hover {
+  background-color: #444444;
+  color: var(--yellow);
+}
+
+.qty-number {
+  min-width: 30px;
+  text-align: center;
+  color: var(--yellow);
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.cart-item-price {
+  color: var(--yellow);
+  font-weight: 900;
+  font-size: 20px;
+  white-space: nowrap;
+}
+
+.btn-remove {
+  background-color: transparent;
+  border: none;
+  color: var(--red);
+  font-size: 32px;
+  cursor: pointer;
+  line-height: 1;
+  transition: var(--transition-fast);
+  padding: 5px;
+  touch-action: manipulation;
+}
+
+.btn-remove:hover {
+  color: #ff0000;
+  transform: scale(1.2) rotate(90deg);
+}
+
+.cart-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cart-list::-webkit-scrollbar-track {
+  background-color: var(--gray);
+  border-radius: 10px;
+}
+
+.cart-list::-webkit-scrollbar-thumb {
+  background-color: var(--light-gray);
+  border-radius: 10px;
+}
+
+.cart-list::-webkit-scrollbar-thumb:hover {
+  background-color: var(--yellow);
+}
+
+/* ==========================================================================
+   26. ФОРМЫ (ИНПУТЫ)
+   ========================================================================== */
+form input, form select {
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid var(--light-gray);
+  background-color: var(--black);
+  color: var(--text-main);
+  font-size: 16px;
+  transition: var(--transition-normal);
+  width: 100%;
+}
+
+form input:focus, form select:focus {
+  border-color: var(--yellow);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+  scroll-margin-bottom: 100px;
+}
+
+.address-group {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.address-sub-row {
+  display: flex;
+  gap: 10px;
+}
+
+.address-sub-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+#changeInputContainer {
+  display: block;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}
+
+#status, .status-msg {
+  margin-top: 16px;
+  color: var(--yellow);
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* ==========================================================================
+   27. АДАПТАЦИЯ ДЛЯ ЭКРАНОВ (МЕДИА-ЗАПРОСЫ)
+   ========================================================================== */
+
+@media (max-width: 1400px) {
+  .header-badge {
+    display: none;
+  }
+}
+
+@media (max-width: 1250px) {
+  .menu-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .drinks-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .delivery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  header {
+    flex-wrap: wrap;
+  }
+  
+  .footer-p-container {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .footer-p-center {
+    grid-column: span 2;
+  }
+
+  .desktop-nav a {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+}
+
+/* ==========================================================================
+   МОБИЛЬНАЯ ОПТИМИЗАЦИЯ (ОТКЛЮЧЕНИЕ ТЯЖЕЛЫХ ЭФФЕКТОВ)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .menu-grid, .drinks-grid, .delivery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  header, section, .footer-p-container {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  header {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    position: relative;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 15px;
+    padding-right: 15px;
+    gap: 10px;
+  }
+
+  .header-badge, .desktop-nav {
+    display: none;
+  }
+
+  .burger-menu {
+    display: flex;
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    padding: 8px;
+  }
+
+  .logo-container {
+    margin: 0;
+    align-items: flex-start;
+  }
+
+  .site-logo {
+    height: 50px;
+  }
+
+  .santa-hat {
+    width: 20px;
+    height: 20px;
+    top: -6px;
+    right: 8px;
+  }
+  
+  .modal, .mobile-nav-overlay, header {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(0, 0, 0, 0.9);
+  }
+
+  .btn-hero, .floating-cart, .social-icon, .btn-auth, .card, .btn-primary, .btn-outline {
+    box-shadow: none !important;
+    filter: none !important;
+    animation: none !important;
+    transition: transform 0.1s !important;
+  }
+
+  .card:hover {
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  .btn-hero:hover {
+    transform: scale(0.98) !important;
+  }
+
+  .header-badge, .price-tag, .footer-phone:hover {
+    text-shadow: none !important;
+  }
+
+  .btn-hero {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 18px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .floating-cart {
+    bottom: calc(15px + env(safe-area-inset-bottom));
+    right: 15px;
+    left: 15px;
+    width: calc(100% - 30px);
+    text-align: center;
+    padding: 16px;
+    font-size: 18px;
+    border-radius: var(--border-radius-pill);
+  }
+
+  .modal {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-content {
+    padding-top: 30px;
+    padding-bottom: calc(30px + env(safe-area-inset-bottom));
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+    max-width: 100%;
+    max-height: 92vh;
+    border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0;
+    border-bottom: none;
+  }
+
+  .modal-drag-handle {
+    display: block;
+    width: 50px;
+    height: 5px;
+    background-color: #444444;
+    border-radius: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+
+  .close-btn {
+    top: 15px;
+    right: 15px;
+    background-color: #222222;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    z-index: 10;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .card-img, .card-emoji-fallback {
+    height: 200px;
+  }
+
+  .card h3 {
+    font-size: 24px;
+  }
+
+  .card-bottom span.price-tag {
+    font-size: 22px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .cart-item-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cart-item-price {
+    font-size: 22px;
+  }
+
+  input, select, textarea {
+    font-size: 16px !important;
+    padding: 15px !important;
+  }
+
+  .address-sub-row {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  body.modal-open {
+    overflow: hidden;
+  }
+
+  body.modal-open .floating-cart {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+  }
+
+  body {
+    padding-bottom: 90px;
+  }
+
+  .footer-p-container {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-p-center {
+    grid-column: span 1;
+  }
+
+  .footer-col, .footer-contacts {
+    text-align: center;
+    align-items: center;
+  }
+
+  .footer-socials {
+    justify-content: center;
+  }
+
+  .footer-col ul li a:hover {
+    transform: none;
+  }
+
+  .qty-btn {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 24px !important;
+  }
+
+  .btn-remove {
+    padding: 10px !important;
+    font-size: 36px !important;
+  }
+
+  .btn-open-modal {
+    padding: 10px 20px !important;
+    font-size: 15px !important;
+  }
+
+  .drinks-grid {
+    max-height: 580px;
+  }
+
+  .map-wrapper iframe {
+    height: 300px !important;
+  }
+}
+
+@media (max-width: 400px) {
+  h2 {
+    font-size: 32px;
+  }
+  
+  .site-logo {
+    height: 45px;
+  }
+  
+  .card h3 {
+    font-size: 22px;
+  }
+  
+  .card-bottom span.price-tag {
+    font-size: 20px;
+  }
+  
+  .btn-hero {
+    padding-top: 14px;
+    padding-bottom: 14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 16px;
+  }
+  
+  .modal-content {
+    padding-top: 20px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom));
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .cart-item-title {
+    font-size: 16px;
+  }
+  
+  .cart-item-controls {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .footer-phone {
+    font-size: 22px;
+  }
+  
+  .footer-col .work-schedule-list li:nth-child(2) {
+    font-size: 20px;
+  }
+}
